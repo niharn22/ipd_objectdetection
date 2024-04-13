@@ -24,8 +24,8 @@ actual_width = 15.0  # You can adjust this value based on your specific setup an
 focal_length = 1000.0  # You need to adjust this value based on your camera's specifications
 
 # Title and description for the Streamlit app
-st.title("Distance Measurement App")
-st.markdown("This app measures the distance from the camera to detected faces.")
+st.title("Blind Navigation IPD")
+st.markdown("This app gives out a beep sound when an object comes dangerously near")
 
 # Open the webcam
 cap = cv2.VideoCapture(0)
