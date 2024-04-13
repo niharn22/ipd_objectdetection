@@ -3,6 +3,7 @@ import math
 import numpy as np
 import streamlit as st
 import pygame
+import json
 
 # Initialize Pygame mixer
 pygame.mixer.init()
@@ -22,8 +23,8 @@ actual_width = 15.0  # You can adjust this value based on your specific setup an
 # or use a rough estimation based on the camera specifications
 focal_length = 1000.0  # You need to adjust this value based on your camera's specifications
 
+# Title and description for the Streamlit app
 st.title("Distance Measurement App")
-
 st.markdown("This app measures the distance from the camera to detected faces.")
 
 # Open the webcam
@@ -40,7 +41,10 @@ pygame.mixer.music.load("beep.mp3")
 
 danger_zone = False
 
-while cap.isOpened():
+# Initialize distance to a default value
+distance = 0
+
+while True:
     # Read the frame from the webcam
     ret, frame = cap.read()
     if not ret:
@@ -76,13 +80,15 @@ while cap.isOpened():
         pygame.mixer.music.stop()
         danger_zone = False
 
-    # Display the result
+    # Display the result in the Streamlit camera screen
     video_placeholder.image(frame, channels="BGR", caption='Distance Measurement')
 
-    # Exit the loop if the 'q' key is pressed
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    # Print the distance and status in JSON format
+    feed_info = {
+        "distance": distance,
+        "status": "danger" if in_danger_zone else "safe"
+    }
+    print(json.dumps(feed_info))
 
-# Release the webcam and close all windows
+# Release the webcam
 cap.release()
-cv2.destroyAllWindows()
